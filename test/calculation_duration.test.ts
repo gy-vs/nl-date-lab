@@ -142,6 +142,24 @@ test("Test - Adding Duration w/ fractions", () => {
         const output = addDuration(reference, { "second": 0.5 });
         expect(output).toStrictEqual(new Date("Sat, Aug 27 2022 12:52:11:500"));
     }
+    {
+        // 0.5 quarter (aka. half quarter) => 1.5 months (1 month + 2 weeks)
+        const reference = new Date("Wed, Mar 06 2024 08:00:00");
+        const output = addDuration(reference, { "quarter": 0.5 });
+        expect(output).toStrictEqual(new Date("Sat, Apr 20 2024 08:00:00"));
+    }
+    {
+        // 2.5 quarters => 6 months + 1.5 months
+        const reference = new Date("Wed, Mar 06 2024 08:00:00");
+        const output = addDuration(reference, { "quarter": 2.5 });
+        expect(output).toStrictEqual(new Date("Sun, Oct 20 2024 08:00:00"));
+    }
+    {
+        // -1.5 quarters => -6 months + 1.5 months
+        const reference = new Date("Wed, Mar 06 2024 08:00:00");
+        const output = addDuration(reference, { "quarter": -1.5 });
+        expect(output).toStrictEqual(new Date("Fri, Oct 20 2023 08:00:00"));
+    }
 });
 
 test("Test - Adding Duration w/ multiple fractions", () => {

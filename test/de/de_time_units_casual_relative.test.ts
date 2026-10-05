@@ -106,3 +106,15 @@ test("Test - de - relative date", function () {
         expect(result.start.isCertain("second")).toBeFalsy();
     });
 });
+
+test("Test - de - relative date mit halb", function () {
+    testSingleCase(chrono.de, "vor einer halben Stunde", new Date(2024, 3 - 1, 6, 8, 0), (result, text) => {
+        expect(result.text).toBe(text);
+        expect(result.start).toBeDate(new Date(2024, 3 - 1, 6, 7, 30));
+    });
+
+    testSingleCase(chrono.de, "vor anderthalb Stunden", new Date(2024, 3 - 1, 6, 8, 0), (result, text) => {
+        expect(result.text).toBe(text);
+        expect(result.start).toBeDate(new Date(2024, 3 - 1, 6, 6, 30));
+    });
+});

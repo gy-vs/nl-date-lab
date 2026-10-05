@@ -117,3 +117,47 @@ test("Test - Single Expression", function () {
         expect(result.start).toBeDate(new Date(2012, 7, 10, 12, 19));
     });
 });
+
+test("Test - Single Expression mit halb und Nachkommastellen", function () {
+    testSingleCase(chrono.de, "in einer halben Stunde", new Date(2024, 3 - 1, 6, 8, 0), (result) => {
+        expect(result.index).toBe(0);
+        expect(result.text).toBe("in einer halben Stunde");
+
+        expect(result.start).toBeDate(new Date(2024, 3 - 1, 6, 8, 30));
+    });
+
+    testSingleCase(chrono.de, "in einem halben Tag", new Date(2024, 3 - 1, 6, 8, 0), (result) => {
+        expect(result.index).toBe(0);
+        expect(result.text).toBe("in einem halben Tag");
+
+        expect(result.start).toBeDate(new Date(2024, 3 - 1, 6, 20, 0));
+    });
+
+    testSingleCase(chrono.de, "in einem halben Jahr", new Date(2024, 3 - 1, 6, 8, 0), (result) => {
+        expect(result.index).toBe(0);
+        expect(result.text).toBe("in einem halben Jahr");
+
+        expect(result.start).toBeDate(new Date(2024, 9 - 1, 6, 8, 0));
+    });
+
+    testSingleCase(chrono.de, "in anderthalb Stunden", new Date(2024, 3 - 1, 6, 8, 0), (result) => {
+        expect(result.index).toBe(0);
+        expect(result.text).toBe("in anderthalb Stunden");
+
+        expect(result.start).toBeDate(new Date(2024, 3 - 1, 6, 9, 30));
+    });
+
+    testSingleCase(chrono.de, "in 1,5 Stunden", new Date(2024, 3 - 1, 6, 8, 0), (result) => {
+        expect(result.index).toBe(0);
+        expect(result.text).toBe("in 1,5 Stunden");
+
+        expect(result.start).toBeDate(new Date(2024, 3 - 1, 6, 9, 30));
+    });
+
+    testSingleCase(chrono.de, "in 1.5 Stunden", new Date(2024, 3 - 1, 6, 8, 0), (result) => {
+        expect(result.index).toBe(0);
+        expect(result.text).toBe("in 1.5 Stunden");
+
+        expect(result.start).toBeDate(new Date(2024, 3 - 1, 6, 9, 30));
+    });
+});
