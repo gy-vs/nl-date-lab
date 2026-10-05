@@ -106,3 +106,20 @@ test("Test - de - relative date", function () {
         expect(result.start.isCertain("second")).toBeFalsy();
     });
 });
+
+test("Test - de - fractional relative expressions", function () {
+    testSingleCase(chrono.de, "vor einer halben Stunde", new Date(2024, 2, 6, 8, 0), (result, text) => {
+        expect(result.text).toBe(text);
+        expect(result.start).toBeDate(new Date(2024, 2, 6, 7, 30));
+    });
+
+    testSingleCase(chrono.de, "vor anderthalb Stunden", new Date(2024, 2, 6, 8, 0), (result, text) => {
+        expect(result.text).toBe(text);
+        expect(result.start).toBeDate(new Date(2024, 2, 6, 6, 30));
+    });
+
+    testSingleCase(chrono.de, "vor 1,5 Stunden", new Date(2024, 2, 6, 8, 0), (result, text) => {
+        expect(result.text).toBe(text);
+        expect(result.start).toBeDate(new Date(2024, 2, 6, 6, 30));
+    });
+});

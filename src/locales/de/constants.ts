@@ -121,9 +121,9 @@ export const TIME_UNIT_DICTIONARY: { [word: string]: Timeunit } = {
 
 //-----------------------------
 
-export const NUMBER_PATTERN = `(?:${matchAnyPattern(
+export const NUMBER_PATTERN = `(?:anderthalb|eineinhalb|${matchAnyPattern(
     INTEGER_WORD_DICTIONARY
-)}|[0-9]+|[0-9]+\\.[0-9]+|halb?|halbe?|einigen?|wenigen?|mehreren?)`;
+)}|[0-9]+(?:[.,][0-9]+)?|(?:ein(?:e[mnrs]?)?\\s+)?halb(?:e[mnrs]?)?|einigen?|wenigen?|mehreren?)`;
 
 export function parseNumberPattern(match: string): number {
     const num = match.toLowerCase();
@@ -133,7 +133,9 @@ export function parseNumberPattern(match: string): number {
         return 1;
     } else if (num.match(/wenigen/)) {
         return 2;
-    } else if (num.match(/halb/) || num.match(/halben/)) {
+    } else if (num.match(/^anderthalb$/) || num.match(/^eineinhalb$/)) {
+        return 1.5;
+    } else if (num.match(/halb/)) {
         return 0.5;
     } else if (num.match(/einigen/)) {
         return 3;
@@ -141,7 +143,7 @@ export function parseNumberPattern(match: string): number {
         return 7;
     }
 
-    return parseFloat(num);
+    return parseFloat(num.replace(",", "."));
 }
 
 //-----------------------------
@@ -169,7 +171,11 @@ export function parseYear(match: string): number {
 
 //-----------------------------
 
-const SINGLE_TIME_UNIT_PATTERN = `(${NUMBER_PATTERN})\\s{0,5}(${matchAnyPattern(TIME_UNIT_DICTIONARY)})\\s{0,5}`;
+// Require a word boundary after the unit so single-letter abbreviations
+// ("h", "a") cannot match the beginning of a longer word (e.g. "halben").
+const SINGLE_TIME_UNIT_PATTERN = `(${NUMBER_PATTERN})\\s{0,5}(${matchAnyPattern(
+    TIME_UNIT_DICTIONARY
+)})(?=\\W|$)\\s{0,5}`;
 const SINGLE_TIME_UNIT_REGEX = new RegExp(SINGLE_TIME_UNIT_PATTERN, "i");
 
 export const TIME_UNITS_PATTERN = repeatedTimeunitPattern("", SINGLE_TIME_UNIT_PATTERN);

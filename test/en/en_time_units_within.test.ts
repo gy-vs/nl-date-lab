@@ -415,3 +415,15 @@ test("Test - Negative cases", () => {
     testUnexpectedResult(chrono, "in them");
     testUnexpectedResult(chrono, "the second half");
 });
+
+test("Test - Fractional quarters", function () {
+    testSingleCase(chrono, "in 2.5 quarters", new Date(2024, 2, 6, 8, 0), (result, text) => {
+        expect(result.text).toBe(text);
+        expect(result.start).toBeDate(new Date(2024, 9, 20, 8, 0));
+    });
+
+    testSingleCase(chrono, "in half a quarter", new Date(2024, 2, 6, 8, 0), (result, text) => {
+        expect(result.text).toBe(text);
+        expect(result.start).toBeDate(new Date(2024, 3, 20, 8, 0));
+    });
+});

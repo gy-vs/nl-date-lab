@@ -355,3 +355,10 @@ test("Test - Negative cases", function () {
     testUnexpectedResult(chrono, "am ago");
     testUnexpectedResult(chrono, "them ago");
 });
+
+test("Test - Fractional quarters ago", function () {
+    testSingleCase(chrono, "1.5 quarters ago", new Date(2024, 2, 6, 8, 0), (result, text) => {
+        expect(result.text).toBe(text);
+        expect(result.start).toBeDate(new Date(2023, 9, 20, 8, 0));
+    });
+});
